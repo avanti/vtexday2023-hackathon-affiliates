@@ -31,7 +31,10 @@ import GET_AFFILIATES from '../../../graphql/custom/getAffiliateCustom.graphql'
 // import { setSortOrder } from '../../../utils/shared'
 import TableActions from '../shared/TableActions'
 import { EDIT_ICON, VIEW_DETAILS_ICON } from '../../../utils/icons'
-import { Checkbox } from '@vtex/admin-ui-form'
+import { ModalProvider } from '../Modal/ModalContext'
+import ModalDialogExample from '../Modal/Modal'
+import CheckboxWithModal from '../Modal/CheckboxWithModal'
+
 
 type TableColumns = {
   affiliateId: string
@@ -103,7 +106,6 @@ const AffiliatesTable: FC = () => {
     },
     [intl, navigate]
   )
-
   const columns: Array<TableColumn<TableColumns>> = [
     {
       id: 'affiliateId',
@@ -132,9 +134,11 @@ const AffiliatesTable: FC = () => {
       header: intl.formatMessage(messages.affiliatesTableIsApprovedColumnLabel),
       resolver: {
         type: 'plain',
-        render: ({ data }) =>
+        render: ({ data, item }) =>
           data ? (
-            <Checkbox />
+            <Stack csx={{ justifyContent: 'center', height: 64 }}>
+              <CheckboxWithModal affiliateId={item.affiliateId} refetch={refetch} />
+            </Stack>
           ) : (
             <Stack csx={{ justifyContent: 'center', height: 64 }}>
               <Tag
@@ -185,8 +189,7 @@ const AffiliatesTable: FC = () => {
   // ]
 
 
-  console.log('affiliated list')
-  const { data, loading } = useQuery(GET_AFFILIATES, {
+  const { data, loading, refetch } = useQuery(GET_AFFILIATES, {
     variables: { input :{
       page: pagination.currentPage,
       pageSize: PAGE_SIZE,
@@ -196,7 +199,6 @@ const AffiliatesTable: FC = () => {
 
     },
     onCompleted: (resultData) => {
-      console.log('resultData', resultData)
       if (pagination.total !== resultData.getAffiliates.pagination.total) {
         pagination.paginate({
           type: 'setTotal',
@@ -251,6 +253,8 @@ const AffiliatesTable: FC = () => {
 
   return (
     <I18nProvider locale={locale}>
+    <ModalProvider>
+
       <DataView state={view}>
         <DataViewControls>
           <FlexSpacer />
@@ -264,6 +268,10 @@ const AffiliatesTable: FC = () => {
         </DataViewControls>
         <Table state={dataGridState} />
       </DataView>
+      <ModalDialogExample />
+
+    </ModalProvider>
+
     </I18nProvider>
   )
 }
