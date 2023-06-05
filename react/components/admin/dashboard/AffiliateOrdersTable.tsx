@@ -40,7 +40,7 @@ import {
 import { messages } from '../../../utils/messages'
 import DatesFilter from './DatesFilter'
 import GET_AFFILIATES_ORDERS from '../../../graphql/getAffiliatesOrders.graphql'
-import GET_AFFILIATES from '../../../graphql/getAffiliates.graphql'
+import GET_AFFILIATES from '../../../graphql/custom/getAffiliateCustom.graphql'
 import GET_AFFILIATES_SCROLL from '../../../graphql/getAffiliatesScroll.graphql'
 import EXPORT_ORDERS from '../../../graphql/exportAffiliatesOrders.graphql'
 import type { AffiliatesOrdersQueryReturnType } from '../../../typings/tables'

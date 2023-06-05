@@ -1,12 +1,12 @@
 import type { TableColumn, UseSortReturn } from '@vtex/admin-ui'
 import {
   experimental_I18nProvider as I18nProvider,
-  Flex,
+  // Flex,
   Tag,
   IconGear,
   Skeleton,
-  useSearchState,
-  Search,
+  // useSearchState,
+  // Search,
   Table,
   DataViewControls,
   FlexSpacer,
@@ -15,8 +15,8 @@ import {
   useDataViewState,
   usePaginationState,
   DataView,
-  Dropdown,
-  useDropdownState,
+  // Dropdown,
+  // useDropdownState,
   Stack,
 } from '@vtex/admin-ui'
 import { useRuntime } from 'vtex.render-runtime'
@@ -27,10 +27,11 @@ import { useQuery } from 'react-apollo'
 
 import { PAGE_SIZE } from '../../../utils/constants'
 import { messages } from '../../../utils/messages'
-import GET_AFFILIATES from '../../../graphql/getAffiliates.graphql'
-import { setSortOrder } from '../../../utils/shared'
+import GET_AFFILIATES from '../../../graphql/custom/getAffiliateCustom.graphql'
+// import { setSortOrder } from '../../../utils/shared'
 import TableActions from '../shared/TableActions'
 import { EDIT_ICON, VIEW_DETAILS_ICON } from '../../../utils/icons'
+import { Checkbox } from '@vtex/admin-ui-form'
 
 type TableColumns = {
   affiliateId: string
@@ -41,10 +42,10 @@ type TableColumns = {
   isApproved: boolean
 }
 
-interface IsApprovedItemType {
-  value: string
-  label: string
-}
+// interface IsApprovedItemType {
+//   value: string
+//   label: string
+// }
 
 const AffiliatesTable: FC = () => {
   const intl = useIntl()
@@ -58,18 +59,18 @@ const AffiliatesTable: FC = () => {
 
   const view = useDataViewState()
 
-  const initialValues = {
-    value: 'any',
-    label: intl.formatMessage(messages.affiliatesTableIsApprovedTextAny),
-  }
+  // const initialValues = {
+  //   value: 'any',
+  //   label: intl.formatMessage(messages.affiliatesTableIsApprovedTextAny),
+  // }
 
   const pagination = usePaginationState({
     pageSize: PAGE_SIZE,
   })
 
-  const { value, onChange, onClear } = useSearchState({
-    timeout: 500,
-  })
+  // const { value, onChange, onClear } = useSearchState({
+  //   timeout: 500,
+  // })
 
   const tableActions = useCallback(
     (item: TableColumns) => {
@@ -127,20 +128,13 @@ const AffiliatesTable: FC = () => {
       header: intl.formatMessage(messages.affiliatesTablePhoneColumnLabel),
     },
     {
-      id: 'isApproved',
+      id: 'status',
       header: intl.formatMessage(messages.affiliatesTableIsApprovedColumnLabel),
       resolver: {
         type: 'plain',
         render: ({ data }) =>
           data ? (
-            <Stack csx={{ justifyContent: 'center', height: 64 }}>
-              <Tag
-                label={intl.formatMessage(
-                  messages.affiliatesTableIsApprovedTextTrue
-                )}
-                variant="green"
-              />
-            </Stack>
+            <Checkbox />
           ) : (
             <Stack csx={{ justifyContent: 'center', height: 64 }}>
               <Tag
@@ -175,46 +169,34 @@ const AffiliatesTable: FC = () => {
     },
   ]
 
-  const isApprovedItems: IsApprovedItemType[] = [
-    {
-      value: 'any',
-      label: intl.formatMessage(messages.affiliatesTableIsApprovedTextAny),
-    },
-    {
-      value: 'true',
-      label: intl.formatMessage(messages.affiliatesTableIsApprovedTextTrue),
-    },
-    {
-      value: 'false',
-      label: intl.formatMessage(messages.affiliatesTableIsApprovedTextFalse),
-    },
-  ]
+  // const isApprovedItems: IsApprovedItemType[] = [
+  //   {
+  //     value: 'any',
+  //     label: intl.formatMessage(messages.affiliatesTableIsApprovedTextAny),
+  //   },
+  //   {
+  //     value: 'true',
+  //     label: intl.formatMessage(messages.affiliatesTableIsApprovedTextTrue),
+  //   },
+  //   {
+  //     value: 'false',
+  //     label: intl.formatMessage(messages.affiliatesTableIsApprovedTextFalse),
+  //   },
+  // ]
 
-  const isApprovedState = useDropdownState({
-    items: isApprovedItems,
-    itemToString: (item: IsApprovedItemType | null) => item?.label ?? '',
-    initialSelectedItem: initialValues,
-  })
 
+  console.log('affiliated list')
   const { data, loading } = useQuery(GET_AFFILIATES, {
-    variables: {
+    variables: { input :{
       page: pagination.currentPage,
       pageSize: PAGE_SIZE,
-      filter: {
-        searchTerm: value ?? null,
-        isApproved:
-          isApprovedState.selectedItem?.value === 'any'
-            ? undefined
-            : isApprovedState.selectedItem?.value === 'true' ?? false,
-      },
-      sorting: sortState?.by
-        ? {
-            field: sortState.by, // as AffiliateSortField
-            order: setSortOrder(sortState.order),
-          }
-        : undefined,
+
+    }
+
+
     },
     onCompleted: (resultData) => {
+      console.log('resultData', resultData)
       if (pagination.total !== resultData.getAffiliates.pagination.total) {
         pagination.paginate({
           type: 'setTotal',
@@ -271,26 +253,6 @@ const AffiliatesTable: FC = () => {
     <I18nProvider locale={locale}>
       <DataView state={view}>
         <DataViewControls>
-          <Search
-            id="search"
-            value={value}
-            onChange={onChange}
-            onClear={onClear}
-            placeholder={intl.formatMessage(
-              messages.affiliatesTableSearchPlaceholder
-            )}
-          />
-          <Flex align="center">
-            {intl.formatMessage(messages.affiliatesTableIsApprovedColumnLabel)}
-            <Dropdown
-              items={isApprovedItems}
-              state={isApprovedState}
-              label="isApproved"
-              renderItem={(item: IsApprovedItemType | null) => item?.label}
-              variant="tertiary"
-              csx={{ width: 120 }}
-            />
-          </Flex>
           <FlexSpacer />
           <Pagination
             state={pagination}

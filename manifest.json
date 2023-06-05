@@ -21,7 +21,8 @@
     "vtex.store-icons": "0.x",
     "vtex.styleguide": "9.x",
     "vtex.css-handles": "1.x",
-    "vtex.session-client": "1.x"
+    "vtex.session-client": "1.x",
+    "vtexdayhackathon3.affiliates-program": "0.x"
   },
   "builders": {
     "node": "6.x",
@@ -100,7 +101,9 @@
   },
   "billingOptions": {
     "type": "free",
-    "availableCountries": ["*"],
+    "availableCountries": [
+      "*"
+    ],
     "support": {
       "url": "https://support.vtex.com/hc/requests"
     }
