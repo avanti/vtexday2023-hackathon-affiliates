@@ -18,7 +18,7 @@
   "admin/affiliates.table.storeName.header": "Nome da loja",
   "admin/affiliates.table.email.header": "Email",
   "admin/affiliates.table.phone.header": "Telefone",
-  "admin/affiliates.table.isApproved.header": "Aprovada?",
+  "admin/affiliates.table.isApproved.header": "Aprovado",
   "admin/affiliates.table.isApproved.text.true": "Sim",
   "admin/affiliates.table.isApproved.text.false": "Não",
   "admin/affiliates.table.isApproved.text.any": "Todos",

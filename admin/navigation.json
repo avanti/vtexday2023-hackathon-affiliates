@@ -5,10 +5,6 @@
     {
       "labelId": "admin/navigation.affiliates.label",
       "path": "/admin/affiliates-management"
-    },
-    {
-      "labelId": "admin/navigation.dashboard.label",
-      "path": "/admin/affiliates-dashboard"
     }
   ]
 }

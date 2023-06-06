@@ -15,6 +15,8 @@ import { useIntl } from 'react-intl'
 
 import { messages } from './utils/messages'
 import AffiliateContent from './components/admin/affiliates/AffiliateContent'
+import { useQuery } from 'react-apollo'
+import GET_AFFILIATE_ID from '../react/graphql/custom/getaffiliateById.graphql'
 
 const AffiliateDetailPage: FC = () => {
   const {
@@ -23,6 +25,19 @@ const AffiliateDetailPage: FC = () => {
     },
     navigate,
   } = useRuntime()
+  7
+   const { data: resultData, error } = useQuery(GET_AFFILIATE_ID, {
+    variables: {
+        affiliateId: affiliateId
+    },
+    onCompleted: () => {
+      console.log('resultData', resultData)
+    },
+    onError: () => {
+      console.log('error', error)
+    }
+
+  })
 
   // const onEditClick = useCallback(() => {
   //   navigate({
@@ -56,7 +71,7 @@ const AffiliateDetailPage: FC = () => {
             <PageHeaderTop>
               <PageHeaderTitle>{`${intl.formatMessage(
                 messages.affiliateLabel
-              )}: ${affiliateId}`}</PageHeaderTitle>
+              )}: ${resultData?.getAffiliateById.name}`}</PageHeaderTitle>
               <PageHeaderActions>
 
               </PageHeaderActions>

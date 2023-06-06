@@ -42,7 +42,8 @@ const AffiliateContent: FC = () => {
     },
        onError: () => {
       console.log('error', error)
-    }
+    },
+
 
   })
 

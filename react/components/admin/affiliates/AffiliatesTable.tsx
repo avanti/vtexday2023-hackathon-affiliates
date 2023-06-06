@@ -10,7 +10,6 @@ import {
   Table,
   DataViewControls,
   FlexSpacer,
-  Pagination,
   useTableState,
   useDataViewState,
   usePaginationState,
@@ -150,7 +149,6 @@ const AffiliatesTable: FC = () => {
             </Stack>
           ),
       },
-      sortable: true,
     },
     {
       id: 'actions',
@@ -256,13 +254,7 @@ const AffiliatesTable: FC = () => {
         <DataView state={view}>
           <DataViewControls>
             <FlexSpacer />
-            <Pagination
-              state={pagination}
-              preposition={intl.formatMessage(messages.paginationPreposition)}
-              subject={intl.formatMessage(messages.paginationSubject)}
-              prevLabel={intl.formatMessage(messages.paginationPrevLabel)}
-              nextLabel={intl.formatMessage(messages.paginationNextLabel)}
-            />
+
           </DataViewControls>
           <Table state={dataGridState} />
         </DataView>

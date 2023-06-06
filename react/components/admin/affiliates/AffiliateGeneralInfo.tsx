@@ -26,7 +26,6 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
   affiliate,
   loading,
 }) => {
-  console.log('affiliate', affiliate)
   const intl = useIntl()
 
   if (loading) {
@@ -59,7 +58,7 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
                   messages.phoneLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {affiliate?.phone}
+                  {formatPhoneNumber(affiliate?.phone)}
                 </Text>
                 <FlexSpacer />
                 {/* <Text variant="title1">{`${intl.formatMessage(
@@ -96,7 +95,7 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
                   messages.documentLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {affiliate?.cpf}
+                  {formatCPF(affiliate?.cpf)}
                 </Text>
               </Column>
             </Columns>
@@ -108,3 +107,19 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
 }
 
 export default AffiliateGeneralInfo
+
+function formatPhoneNumber(value: string): string {
+  const ddd = value.slice(0, 2);
+  const firstPart = value.slice(2, 7);
+  const secondPart = value.slice(7);
+
+  return `(${ddd}) ${firstPart}-${secondPart}`;
+}
+function formatCPF(value: string): string {
+  const firstPart = value.slice(0, 3);
+  const secondPart = value.slice(3, 6);
+  const thirdPart = value.slice(6, 9);
+  const verificationDigits = value.slice(9);
+
+  return `${firstPart}.${secondPart}.${thirdPart}-${verificationDigits}`;
+}
