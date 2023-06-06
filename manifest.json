@@ -21,8 +21,7 @@
     "vtex.store-icons": "0.x",
     "vtex.styleguide": "9.x",
     "vtex.css-handles": "1.x",
-    "vtex.session-client": "1.x",
-    "vtexdayhackathon3.affiliates-program": "0.x"
+    "vtex.session-client": "1.x"
   },
   "builders": {
     "node": "6.x",
@@ -33,6 +32,9 @@
     "store": "0.x",
     "messages": "1.x",
     "admin": "0.x"
+  },
+  "peerDependencies": {
+    "vtexdayhackathon3.affiliates-program": "0.x"
   },
   "credentialType": "absolute",
   "policies": [
