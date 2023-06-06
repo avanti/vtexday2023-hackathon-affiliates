@@ -1,16 +1,34 @@
 import React from 'react';
 import { ModalDialog } from 'vtex.styleguide'
 import { useModal } from './ModalContext'
-import { useMutation } from 'react-apollo';
+import { useMutation, useQuery } from 'react-apollo';
 import APPROVE_AFFILIATION from '../../../graphql/custom/approveOrDenyAffiliate.graphql';
+import { ApolloQueryResult } from 'apollo-client';
+import GET_AFFILIATE_ID from '../../../graphql/custom/getaffiliateById.graphql';
 
-const ModalDialogExample = () => {
+interface Props{
+  refetch: (variables?: {
+    input: {
+        page: number;
+        pageSize: number;
+    };
+} | undefined) => Promise<ApolloQueryResult<any>>}
+
+const ModalDialogExample = ({refetch}: Props) => {
   const { isModalOpen, closeModal, affiliateId } = useModal();
-  const [approveAffiliation, { }] = useMutation(APPROVE_AFFILIATION, {
-    onCompleted: (data) => {
-      console.log('resultData', data)
+  // const [isApproved, setIsApproved] = useState()
+
+
+  const { data: resultData } = useQuery(GET_AFFILIATE_ID, {
+    variables: {
+        affiliateId: affiliateId
     },
-    onError: (error) => {
+    fetchPolicy: 'no-cache'
+
+  })
+
+  const [approveAffiliation, {  }] = useMutation(APPROVE_AFFILIATION, {
+      onError: (error) => {
       console.log('error', error)
     }
   });
@@ -20,11 +38,16 @@ const ModalDialogExample = () => {
   };
 
   const handleConfirm = async () => {
-    console.log('affiliateId', affiliateId)
+    console.log('resultData', resultData.getAffiliateById.status)
+    const param = resultData.getAffiliateById.status === 'APPROVED' ? false : true
+    console.log('param', param)
     await approveAffiliation({
-      variables: { input: { affiliateId: affiliateId, approve: false } }});
+      variables: { input: { affiliateId: affiliateId, approve: param } }});
+    await refetch()
+
     closeModal()
   };
+
 
   return (
     <div>
@@ -33,23 +56,21 @@ const ModalDialogExample = () => {
           centered
           confirmation={{
             onClick: handleConfirm,
-            label: 'SIM',
+            label: 'CONFIRMAR',
           }}
           cancelation={{
             onClick: handleCloseModal,
-            label: 'NÃO',
+            label: 'CANCELAR',
           }}
           isOpen={isModalOpen}
           onClose={handleCloseModal}
         >
-          <div className="flex flex-column flex-row-ns">
-            <div className="w-100 w-50-ns">
-              <p className="f3 f1-ns fw3 gray">
+                <p style={{fontSize: '1.5rem', fontWeight: 300, color: 'black'}}>
                 DESEJA APROVAR/REPROVAR A AFILIAÇÃO?
               </p>
-            </div>
-
-          </div>
+              <p style={{marginTop: '10px'}}>
+                Você pode reverter esta ação a qualquer momento.
+              </p>
         </ModalDialog>
       )}
     </div>

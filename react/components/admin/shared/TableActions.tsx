@@ -29,7 +29,7 @@ const TableActions = ({ actions }: TableActionsProps) => {
 
   return (
     <>
-      <MenuButton variant="tertiary" state={state} />
+      <MenuButton variant="tertiary" state={state} labelHidden />
       <Menu aria-label="actions" state={state} csx={Styles.Container}>
         {actions.map((action) => {
           return (

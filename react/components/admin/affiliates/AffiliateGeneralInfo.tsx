@@ -26,6 +26,7 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
   affiliate,
   loading,
 }) => {
+  console.log('affiliate', affiliate)
   const intl = useIntl()
 
   if (loading) {
@@ -49,20 +50,25 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
                   {affiliate?.name}
                 </Text>
                 <FlexSpacer />
-                <Text variant="title1">{`${intl.formatMessage(
-                  messages.storeNameLabel
-                )}: `}</Text>
+                <Text variant="title1">Código do afiliado:</Text>
                 <Text variant="action2" tone="info">
-                  {affiliate?.storeName}
+                  {affiliate?.affiliateCode}
                 </Text>
                 <FlexSpacer />
                 <Text variant="title1">{`${intl.formatMessage(
+                  messages.phoneLabel
+                )}: `}</Text>
+                <Text variant="action2" tone="info">
+                  {affiliate?.phone}
+                </Text>
+                <FlexSpacer />
+                {/* <Text variant="title1">{`${intl.formatMessage(
                   messages.slugLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
                   {affiliate?.slug}
                 </Text>
-                <FlexSpacer />
+                <FlexSpacer /> */}
                 <Text variant="title1">{`${intl.formatMessage(
                   messages.emailLabel
                 )}: `}</Text>
@@ -71,32 +77,26 @@ const AffiliateGeneralInfo: FC<AffiliateGeneralInfoProps> = ({
                 </Text>
               </Column>
               <Column units={6}>
-                <Text variant="title1">{`${intl.formatMessage(
-                  messages.phoneLabel
-                )}: `}</Text>
-                <Text variant="action2" tone="info">
-                  {affiliate?.phone}
-                </Text>
-                <FlexSpacer />
+
                 <Text variant="title1">{`${intl.formatMessage(
                   messages.refIdLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {affiliate?.refId}
+                  {affiliate?.affiliateId}
                 </Text>
                 <FlexSpacer />
                 <Text variant="title1">{`${intl.formatMessage(
                   messages.documentTypeLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {affiliate?.documentType}
+                  CPF
                 </Text>
                 <FlexSpacer />
                 <Text variant="title1">{`${intl.formatMessage(
                   messages.documentLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {affiliate?.document}
+                  {affiliate?.cpf}
                 </Text>
               </Column>
             </Columns>

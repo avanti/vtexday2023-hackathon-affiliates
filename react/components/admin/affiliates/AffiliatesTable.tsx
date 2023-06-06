@@ -30,7 +30,7 @@ import { messages } from '../../../utils/messages'
 import GET_AFFILIATES from '../../../graphql/custom/getAffiliateCustom.graphql'
 // import { setSortOrder } from '../../../utils/shared'
 import TableActions from '../shared/TableActions'
-import { EDIT_ICON, VIEW_DETAILS_ICON } from '../../../utils/icons'
+import { VIEW_DETAILS_ICON } from '../../../utils/icons'
 import { ModalProvider } from '../Modal/ModalContext'
 import ModalDialogExample from '../Modal/Modal'
 import CheckboxWithModal from '../Modal/CheckboxWithModal'
@@ -90,18 +90,18 @@ const AffiliatesTable: FC = () => {
             })
           },
         },
-        {
-          label: intl.formatMessage(messages.editLabel),
-          icon: EDIT_ICON,
-          handleOnClick: () => {
-            navigate({
-              page: 'admin.app.affiliates.affiliate-edit',
-              params: {
-                affiliateId: item.affiliateId,
-              },
-            })
-          },
-        },
+        // {
+        //   label: intl.formatMessage(messages.editLabel),
+        //   icon: EDIT_ICON,
+        //   handleOnClick: () => {
+        //     navigate({
+        //       page: 'admin.app.affiliates.affiliate-edit',
+        //       params: {
+        //         affiliateId: item.affiliateId,
+        //       },
+        //     })
+        //   },
+        // },
       ]
     },
     [intl, navigate]
@@ -117,18 +117,18 @@ const AffiliatesTable: FC = () => {
       id: 'name',
       header: intl.formatMessage(messages.affiliatesTableNameColumnLabel),
     },
-    {
-      id: 'storeName',
-      header: intl.formatMessage(messages.affiliatesTableStoreNameColumnLabel),
-    },
+    // {
+    //   id: 'storeName',
+    //   header: intl.formatMessage(messages.affiliatesTableStoreNameColumnLabel),
+    // },
     {
       id: 'email',
       header: intl.formatMessage(messages.affiliatesTableEmailColumnLabel),
     },
-    {
-      id: 'phone',
-      header: intl.formatMessage(messages.affiliatesTablePhoneColumnLabel),
-    },
+    // {
+    //   id: 'phone',
+    //   header: intl.formatMessage(messages.affiliatesTablePhoneColumnLabel),
+    // },
     {
       id: 'status',
       header: intl.formatMessage(messages.affiliatesTableIsApprovedColumnLabel),
@@ -137,7 +137,7 @@ const AffiliatesTable: FC = () => {
         render: ({ data, item }) =>
           data ? (
             <Stack csx={{ justifyContent: 'center', height: 64 }}>
-              <CheckboxWithModal affiliateId={item.affiliateId} refetch={refetch} />
+              <CheckboxWithModal affiliateId={item.affiliateId}  status={(item as any).status as string}/>
             </Stack>
           ) : (
             <Stack csx={{ justifyContent: 'center', height: 64 }}>
@@ -154,7 +154,7 @@ const AffiliatesTable: FC = () => {
     },
     {
       id: 'actions',
-      header: () => <IconGear />,
+      header: () => <div style={{marginLeft: '8px'}}><IconGear /></div>,
       width: 120,
       resolver: {
         type: 'root',
@@ -165,7 +165,7 @@ const AffiliatesTable: FC = () => {
 
           return (
             <I18nProvider locale={locale}>
-              <TableActions actions={tableActions(item)} />
+              <TableActions  actions={tableActions(item)} />
             </I18nProvider>
           )
         },
@@ -190,13 +190,11 @@ const AffiliatesTable: FC = () => {
 
 
   const { data, loading, refetch } = useQuery(GET_AFFILIATES, {
-    variables: { input :{
-      page: pagination.currentPage,
-      pageSize: PAGE_SIZE,
-
-    }
-
-
+    variables: {
+      input: {
+        page: pagination.currentPage,
+        pageSize: PAGE_SIZE,
+      }
     },
     onCompleted: (resultData) => {
       if (pagination.total !== resultData.getAffiliates.pagination.total) {
@@ -253,24 +251,24 @@ const AffiliatesTable: FC = () => {
 
   return (
     <I18nProvider locale={locale}>
-    <ModalProvider>
+      <ModalProvider>
 
-      <DataView state={view}>
-        <DataViewControls>
-          <FlexSpacer />
-          <Pagination
-            state={pagination}
-            preposition={intl.formatMessage(messages.paginationPreposition)}
-            subject={intl.formatMessage(messages.paginationSubject)}
-            prevLabel={intl.formatMessage(messages.paginationPrevLabel)}
-            nextLabel={intl.formatMessage(messages.paginationNextLabel)}
-          />
-        </DataViewControls>
-        <Table state={dataGridState} />
-      </DataView>
-      <ModalDialogExample />
+        <DataView state={view}>
+          <DataViewControls>
+            <FlexSpacer />
+            <Pagination
+              state={pagination}
+              preposition={intl.formatMessage(messages.paginationPreposition)}
+              subject={intl.formatMessage(messages.paginationSubject)}
+              prevLabel={intl.formatMessage(messages.paginationPrevLabel)}
+              nextLabel={intl.formatMessage(messages.paginationNextLabel)}
+            />
+          </DataViewControls>
+          <Table state={dataGridState} />
+        </DataView>
+        <ModalDialogExample refetch={refetch}/>
 
-    </ModalProvider>
+      </ModalProvider>
 
     </I18nProvider>
   )

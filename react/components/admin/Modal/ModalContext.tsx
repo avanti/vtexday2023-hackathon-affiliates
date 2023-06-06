@@ -1,43 +1,44 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface ModalContextData {
   isModalOpen: boolean;
-  openModal: (affiliateId: string, refetch: () => void) => void;
+  openModal: (affiliateId: string) => void;
   closeModal: () => void;
   affiliateId: string;
-  refetch?: () => void;
+  isApproved: boolean;
+  setIsApprovedFn: (isApproved: boolean) => void;
+
 }
 
 export const ModalContext = createContext<ModalContextData>({
   affiliateId: '',
   isModalOpen: false,
+  isApproved: false,
   openModal: () => {},
   closeModal: () => {},
+  setIsApprovedFn: () => {},
   });
 
 export const ModalProvider: React.FC = ({ children }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [affiliateId, setAffiliateId] = useState<string >('');
-  const [refetch, setRefetch] = useState<(() => void) | undefined>(undefined);
+  const [isApproved, setIsApproved] = useState(false);
 
-  const openModal = (id: string, refetch: () => void) => {
+  const openModal = (id: string) => {
     setAffiliateId(id);
     setModalOpen(true);
-    setRefetch(refetch);
   };
 
   const closeModal = () => {
     setAffiliateId('');
     setModalOpen(false);
   };
-
-  useEffect(() => {
-    console.log('affiliateId', affiliateId)
-  }
-  , [affiliateId]);
+  const setIsApprovedFn = (isApproved: boolean) => {
+    setIsApproved(isApproved);
+  };
 
   return (
-    <ModalContext.Provider value={{ isModalOpen, openModal, closeModal, affiliateId, refetch }}>
+    <ModalContext.Provider value={{ isModalOpen, openModal, closeModal, affiliateId, isApproved, setIsApprovedFn}}>
       {children}
     </ModalContext.Provider>
   );

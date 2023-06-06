@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import React, { useCallback } from 'react'
+import React from 'react'
 import {
   Page,
   PageHeader,
@@ -9,7 +9,6 @@ import {
   ThemeProvider,
   ToastProvider,
   PageHeaderActions,
-  Button,
 } from '@vtex/admin-ui'
 import { useRuntime } from 'vtex.render-runtime'
 import { useIntl } from 'react-intl'
@@ -25,21 +24,21 @@ const AffiliateDetailPage: FC = () => {
     navigate,
   } = useRuntime()
 
-  const onEditClick = useCallback(() => {
-    navigate({
-      page: 'admin.app.affiliates.affiliate-edit',
-      params: {
-        affiliateId,
-      },
-    })
-  }, [navigate, affiliateId])
+  // const onEditClick = useCallback(() => {
+  //   navigate({
+  //     page: 'admin.app.affiliates.affiliate-edit',
+  //     params: {
+  //       affiliateId,
+  //     },
+  //   })
+  // }, [navigate, affiliateId])
 
-  const onAffiliateOrdersClick = useCallback(() => {
-    navigate({
-      page: 'admin.app.affiliates.dashboard',
-      query: `search=${affiliateId}`,
-    })
-  }, [navigate, affiliateId])
+  // const onAffiliateOrdersClick = useCallback(() => {
+  //   navigate({
+  //     page: 'admin.app.affiliates.dashboard',
+  //     query: `search=${affiliateId}`,
+  //   })
+  // }, [navigate, affiliateId])
 
   const intl = useIntl()
 
@@ -59,12 +58,7 @@ const AffiliateDetailPage: FC = () => {
                 messages.affiliateLabel
               )}: ${affiliateId}`}</PageHeaderTitle>
               <PageHeaderActions>
-                <Button onClick={onAffiliateOrdersClick}>
-                  {intl.formatMessage(messages.dashboardPageHeaderTitle)}
-                </Button>
-                <Button onClick={onEditClick}>
-                  {intl.formatMessage(messages.editLabel)}
-                </Button>
+
               </PageHeaderActions>
             </PageHeaderTop>
           </PageHeader>

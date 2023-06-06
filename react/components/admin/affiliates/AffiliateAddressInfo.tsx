@@ -82,14 +82,14 @@ const AffiliateAddressInfo: FC<AffiliateAddressInfoProps> = ({
                   messages.countryLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {address?.country}
+                  Brasil
                 </Text>
                 <FlexSpacer />
                 <Text variant="title1">{`${intl.formatMessage(
                   messages.referenceLabel
                 )}: `}</Text>
                 <Text variant="action2" tone="info">
-                  {address?.reference}
+                  {address?.complement}
                 </Text>
                 <FlexSpacer />
                 <Text variant="title1">{`${intl.formatMessage(
